@@ -7,44 +7,96 @@ from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
+DATABASE_URL = os.getenv("DATABASE_URL")
+if DATABASE_URL:
+    import psycopg
+    from psycopg.rows import dict_row
+
 BASE = os.path.dirname(os.path.abspath(__file__))
-DB = os.path.join(BASE, "newsstand.db")
+DB_DIR = "/tmp" if os.getenv("VERCEL") else BASE
+DB = os.path.join(DB_DIR, "newsstand.db")
 SOURCES = os.path.join(BASE, "sources.json")
 REFRESH_MINUTES = int(os.getenv("REFRESH_MINUTES", "30"))
 
 def now():
     return datetime.now(timezone.utc).isoformat()
 
+class DatabaseConnection:
+    def __init__(self):
+        if DATABASE_URL:
+            self.connection = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+        else:
+            self.connection = sqlite3.connect(DB, timeout=30)
+            self.connection.row_factory = sqlite3.Row
+
+    def execute(self, sql, params=()):
+        if DATABASE_URL:
+            sql = sql.replace("?", "%s")
+        return self.connection.execute(sql, params)
+
+    def executescript(self, sql):
+        return self.connection.executescript(sql)
+
+    def commit(self):
+        self.connection.commit()
+
+    def close(self):
+        self.connection.close()
+
 def db():
-    c = sqlite3.connect(DB, timeout=30)
-    c.row_factory = sqlite3.Row
-    return c
+    return DatabaseConnection()
 
 def init_db():
     c = db()
-    c.executescript("""
-    PRAGMA journal_mode=WAL;
-    CREATE TABLE IF NOT EXISTS articles(
-      id TEXT PRIMARY KEY, title TEXT NOT NULL, url TEXT UNIQUE NOT NULL,
-      source TEXT NOT NULL, language TEXT DEFAULT 'en', region TEXT DEFAULT 'India',
-      state TEXT, city TEXT, category TEXT DEFAULT 'general', importance REAL DEFAULT 5,
-      published_at TEXT, summary TEXT, fetched_at TEXT NOT NULL
-    );
-    CREATE INDEX IF NOT EXISTS ix_articles_published ON articles(published_at);
-    CREATE INDEX IF NOT EXISTS ix_articles_region ON articles(region);
-    CREATE INDEX IF NOT EXISTS ix_articles_state ON articles(state);
-    CREATE INDEX IF NOT EXISTS ix_articles_category ON articles(category);
-    CREATE TABLE IF NOT EXISTS epapers(
-      id INTEGER PRIMARY KEY AUTOINCREMENT, newspaper TEXT NOT NULL,
-      language TEXT, region TEXT, state TEXT, city TEXT, edition TEXT,
-      official_url TEXT NOT NULL, archive_url TEXT, notes TEXT,
-      UNIQUE(newspaper, edition, official_url)
-    );
-    CREATE TABLE IF NOT EXISTS refresh_log(
-      id INTEGER PRIMARY KEY AUTOINCREMENT, started_at TEXT, finished_at TEXT,
-      source TEXT, fetched INTEGER DEFAULT 0, ok INTEGER DEFAULT 1, error TEXT
-    );
-    """)
+    if DATABASE_URL:
+                statements = [
+                        """CREATE TABLE IF NOT EXISTS articles(
+                            id TEXT PRIMARY KEY, title TEXT NOT NULL, url TEXT UNIQUE NOT NULL,
+                            source TEXT NOT NULL, language TEXT DEFAULT 'en', region TEXT DEFAULT 'India',
+                            state TEXT, city TEXT, category TEXT DEFAULT 'general', importance REAL DEFAULT 5,
+                            published_at TEXT, summary TEXT, fetched_at TEXT NOT NULL
+                        )""",
+                        "CREATE INDEX IF NOT EXISTS ix_articles_published ON articles(published_at)",
+                        "CREATE INDEX IF NOT EXISTS ix_articles_region ON articles(region)",
+                        "CREATE INDEX IF NOT EXISTS ix_articles_state ON articles(state)",
+                        "CREATE INDEX IF NOT EXISTS ix_articles_category ON articles(category)",
+                        """CREATE TABLE IF NOT EXISTS epapers(
+                            id BIGSERIAL PRIMARY KEY, newspaper TEXT NOT NULL,
+                            language TEXT, region TEXT, state TEXT, city TEXT, edition TEXT,
+                            official_url TEXT NOT NULL, archive_url TEXT, notes TEXT,
+                            UNIQUE(newspaper, edition, official_url)
+                        )""",
+                        """CREATE TABLE IF NOT EXISTS refresh_log(
+                            id BIGSERIAL PRIMARY KEY, started_at TEXT, finished_at TEXT,
+                            source TEXT, fetched INTEGER DEFAULT 0, ok INTEGER DEFAULT 1, error TEXT
+                        )"""
+                ]
+                for statement in statements:
+                        c.execute(statement)
+    else:
+                c.executescript("""
+                PRAGMA journal_mode=WAL;
+                CREATE TABLE IF NOT EXISTS articles(
+                    id TEXT PRIMARY KEY, title TEXT NOT NULL, url TEXT UNIQUE NOT NULL,
+                    source TEXT NOT NULL, language TEXT DEFAULT 'en', region TEXT DEFAULT 'India',
+                    state TEXT, city TEXT, category TEXT DEFAULT 'general', importance REAL DEFAULT 5,
+                    published_at TEXT, summary TEXT, fetched_at TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS ix_articles_published ON articles(published_at);
+                CREATE INDEX IF NOT EXISTS ix_articles_region ON articles(region);
+                CREATE INDEX IF NOT EXISTS ix_articles_state ON articles(state);
+                CREATE INDEX IF NOT EXISTS ix_articles_category ON articles(category);
+                CREATE TABLE IF NOT EXISTS epapers(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT, newspaper TEXT NOT NULL,
+                    language TEXT, region TEXT, state TEXT, city TEXT, edition TEXT,
+                    official_url TEXT NOT NULL, archive_url TEXT, notes TEXT,
+                    UNIQUE(newspaper, edition, official_url)
+                );
+                CREATE TABLE IF NOT EXISTS refresh_log(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT, started_at TEXT, finished_at TEXT,
+                    source TEXT, fetched INTEGER DEFAULT 0, ok INTEGER DEFAULT 1, error TEXT
+                );
+                """)
     c.commit(); c.close()
 
 def load_config():
@@ -136,13 +188,17 @@ def seed_epapers():
     c=db()
     for src in load_config()["sources"]:
         for p in src.get("epapers",[]):
-            c.execute("""INSERT OR IGNORE INTO epapers
+                c.execute("""INSERT INTO epapers
               (newspaper,language,region,state,city,edition,official_url,archive_url,notes)
-              VALUES(?,?,?,?,?,?,?,?,?)""",
+              VALUES(?,?,?,?,?,?,?,?,?)
+              ON CONFLICT(newspaper, edition, official_url) DO NOTHING""",
               (p["name"],p.get("language",src.get("language","en")),p.get("region",src.get("region")),
                p.get("state",src.get("state")),p.get("city",src.get("city")),p.get("edition",""),
-               p["official_url"],p.get("archive_url"),p.get("notes","")))
+                    p["official_url"],p.get("archive_url"),p.get("notes","")))
     c.commit(); c.close()
+
+init_db()
+seed_epapers()
 
 def refresh_all():
     results=[fetch_source(s) for s in load_config()["sources"] if s.get("enabled",True)]
