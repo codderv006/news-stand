@@ -223,7 +223,10 @@ def articles_query(region=None,state=None,city=None,cat=None,source=None,q=None,
         where.append("(title LIKE ? OR summary LIKE ?)")
         args += [f"%{q}%",f"%{q}%"]
     if date:
-        where.append("date(published_at)=date(?)"); args.append(date)
+        if DATABASE_URL:
+            where.append("published_at::date=%s::date"); args.append(date)
+        else:
+            where.append("date(published_at)=date(?)"); args.append(date)
     sql="SELECT * FROM articles"
     if where: sql+=" WHERE "+" AND ".join(where)
     sql+=" ORDER BY importance DESC, published_at DESC LIMIT ?"
