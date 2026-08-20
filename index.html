@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Newsstand</title>
+<style>
+:root{--paper:#fff;--page:#f0f0f0;--ink:#111;--muted:#6b6b6b;--line:#d5d5d5;--dark:#111;--accent:#333;--link:#165dcc}
+*{box-sizing:border-box}html{background:var(--page)}body{margin:0;background:var(--page);color:var(--ink);font:15px/1.55 Georgia,"Times New Roman",serif}button,input,select{font:inherit}
+header{background:var(--dark);color:white;position:sticky;top:0;z-index:10;border-bottom:1px solid #000}.bar{max-width:1400px;margin:auto;padding:11px 24px;display:flex;gap:18px;align-items:center;justify-content:space-between}.logo{font-size:24px;font-weight:bold;letter-spacing:.02em}.controls{display:flex;gap:6px;flex-wrap:wrap}.controls input,.controls select,.controls button{padding:7px 10px;border:1px solid #bdbdbd;background:var(--paper);color:var(--ink);border-radius:3px}.controls button{font-weight:bold;cursor:pointer}.controls button:disabled{opacity:.6;cursor:wait}
+main{max-width:1400px;margin:auto;padding:30px 24px}.masthead{border-bottom:3px double var(--ink);padding:10px 0 17px;margin-bottom:16px}.headline{display:flex;justify-content:space-between;gap:20px;align-items:end}.headline h1{font-size:clamp(30px,4vw,54px);line-height:1;margin:0 0 7px;font-weight:normal}.muted{color:var(--muted)}
+.tabs,.chips{display:flex;gap:5px;overflow:auto;margin:12px 0;scrollbar-width:none;-ms-overflow-style:none}.tabs::-webkit-scrollbar,.chips::-webkit-scrollbar{display:none}.tab,.chip{white-space:nowrap;border:1px solid #c7c7c7;background:transparent;padding:7px 13px;border-radius:999px;cursor:pointer;font:13px Arial,sans-serif}.tab:hover,.chip:hover{border-color:var(--ink)}.tab.active,.chip.active{background:var(--dark);border-color:var(--dark);color:white}
+.layout{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(280px,1fr);gap:24px}.panel{background:var(--paper);border:1px solid var(--line);padding:20px;margin-bottom:20px}.panel h2{border-bottom:2px solid var(--ink);margin:0 0 15px;padding-bottom:7px;font-size:21px;font-weight:normal}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}.story{border-top:1px solid var(--line);padding:16px 0 18px}.story h3{font-size:21px;line-height:1.14;margin:5px 0 7px;font-weight:bold}.story p{color:#4d4a45;margin:7px 0}.story.lead{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,1fr);gap:25px;border-top:0;border-bottom:3px double var(--ink);padding-top:0;margin-bottom:4px}.story.lead h3{font-size:clamp(27px,3.2vw,43px);line-height:1.03}.story.lead p{font-size:17px}.meta{font:11px/1.3 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.read{font-weight:bold;color:var(--link);text-decoration:none;display:inline-block;margin-top:7px}.sources{font:11px Arial,sans-serif;color:var(--muted)}
+.brief{border-left:3px solid var(--ink);padding:7px 12px;margin:9px 0;background:#f6f6f6}.brief b{font-size:16px;line-height:1.2}.papergrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 13px}.paper{border-top:1px solid var(--line);padding:11px 0}.paper b{display:block;margin-bottom:3px}.paper a{display:block;margin-top:5px;color:var(--link);font-weight:bold;text-decoration:none}.status{font:12px Arial,sans-serif;color:var(--muted)}.empty{padding:28px;text-align:center;color:var(--muted)}
+@media(max-width:980px){main{padding:24px 18px}.layout{grid-template-columns:1fr}.papergrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:650px){.bar{align-items:stretch;flex-direction:column;padding:10px 14px}.logo{font-size:22px}.controls{width:100%}.controls input,.controls select,.controls button{flex:1;min-width:0}.headline{display:block}.headline h1{font-size:36px}.status{margin-top:12px}.grid{display:block}.story.lead{display:block}.story.lead h3{font-size:31px}.panel{padding:15px;margin-bottom:14px}.papergrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}}
+@media(max-width:390px){main{padding:18px 11px}.papergrid{display:block}.headline h1{font-size:32px}.story h3{font-size:19px}}
+</style>
+</head>
+<body>
+<header><div class="bar"><div class="logo">Newsstand</div>
+<div class="controls"><input id="date" type="date"><input id="search" placeholder="Search"><button id="refresh">Refresh</button></div></div></header>
+<main>
+<div class="masthead">
+<div class="headline"><div><h1>Everything important, one place.</h1><div class="muted">World → India → Maharashtra → states → cities</div></div><div class="status" id="status">Loading…</div></div>
+<div class="muted" id="dateNotice"></div>
+<div class="tabs" id="regions">
+<div class="tab active" data-v="">All</div><div class="tab" data-v="World">World</div><div class="tab" data-v="India">India</div><div class="tab" data-v="Maharashtra">Maharashtra</div>
+</div>
+<div class="chips" id="states"></div>
+<div class="chips" id="cities"></div>
+</div>
+<div class="layout">
+<section>
+<div class="panel"><h2>Daily Briefing</h2><div id="briefing"></div></div>
+<div class="panel"><h2 id="title">Latest stories</h2><div class="grid" id="stories"></div></div>
+</section>
+<aside>
+<div class="panel"><h2>E-papers</h2><div class="muted" style="margin-bottom:9px">Official publisher links. Select a date to use the publisher's archive.</div><div class="controls" style="margin-bottom:10px"><select id="language"><option value="">All languages</option><option value="en">English</option><option value="mr">Marathi</option></select></div><div class="papergrid" id="papers"></div></div>
+<div class="panel"><h2>Coverage</h2><div id="coverage"></div></div>
+</aside>
+</div>
+</main>
+<script>
+let region="",state="",city="";
+const $=x=>document.querySelector(x), $$=x=>document.querySelectorAll(x);
+$("#date").value=new Date().toISOString().slice(0,10);
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function dt(s){try{return new Date(s).toLocaleString([],{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}catch{return""}}
+function params(){let p=new URLSearchParams({limit:"160",date:$("#date").value,cluster:"true"});if(region)p.set("region",region);if(state)p.set("state",state);if(city)p.set("city",city);let q=$("#search").value.trim();if(q)p.set("q",q);return p}
+async function load(){
+ let p=params(), d=await fetch("/api/articles?"+p).then(r=>r.json());
+ $("#title").textContent=(region||"All regions")+(state?" · "+state:"")+(city?" · "+city:"")+" stories";
+ $("#dateNotice").textContent=d.date_match===false?"No stories were published on the selected date. Showing the latest available stories for this filter.":"";
+ $("#stories").innerHTML=d.articles.length?d.articles.map((a,i)=>`
+ <article class="story ${i===0?"lead":""}"><div><div class="meta">${esc(a.source)} · ${esc(a.category)} · ${dt(a.published_at)}</div>
+ <h3>${esc(a.title)}</h3><p>${esc(a.summary)}</p>
+ <div class="sources">${a.source_count||1} source${(a.source_count||1)>1?"s":""}</div>
+ <a class="read" target="_blank" rel="noopener" href="${esc(a.url)}">Read original →</a></div></article>`).join(""):"<div class='empty'>No stories for this filter/date yet. Try Refresh or another date.</div>";
+ await Promise.all([briefing(),papers(),coverage(),status()]);
+}
+async function briefing(){
+ let p=params();p.delete("limit");p.delete("cluster");let d=await fetch("/api/briefing?"+p).then(r=>r.json());
+ $("#briefing").innerHTML=(d.date_match===false?"<div class='muted' style='margin-bottom:10px'>Latest available briefing for this filter:</div>":"")+d.stories.slice(0,14).map(a=>`<div class="brief"><b>${esc(a.title)}</b><div class="meta">${esc(a.source)} · ${a.source_count||1} source${(a.source_count||1)>1?"s":""}</div><div class="muted">${esc(a.summary)}</div></div>`).join("")||"<div class='empty'>No briefing yet.</div>";
+}
+async function papers(){
+ let p=new URLSearchParams({date:$("#date").value});if(region)p.set("region",region);if(state)p.set("state",state);if(city)p.set("city",city);if($("#language").value)p.set("language",$("#language").value);
+ let d=await fetch("/api/epapers?"+p).then(r=>r.json());
+ $("#papers").innerHTML=d.epapers.map(x=>`<div class="paper"><b>${esc(x.newspaper)}</b><span class="meta">${esc([x.state,x.city,x.edition].filter(Boolean).join(" · "))}</span><a target="_blank" rel="noopener" href="${esc(x.official_url)}">Open official e-paper →</a>${x.archive_url?`<a target="_blank" rel="noopener" href="${esc(x.archive_url)}">Open archive →</a>`:""}</div>`).join("")||"<div class='empty'>No e-paper registered for this filter.</div>";
+}
+async function coverage(){
+ let p=new URLSearchParams();if(region)p.set("region",region);if(state)p.set("state",state);if(city)p.set("city",city);
+ let d=await fetch("/api/meta?"+p).then(r=>r.json());
+ $("#coverage").innerHTML=`<b>${d.sources.length}</b> configured feeds<br><b>${d.regions.reduce((a,x)=>a+x.n,0)}</b> stored stories<br><br>`+
+ d.categories.slice(0,8).map(x=>`${esc(x.category)}: ${x.n}`).join(" · ");
+ let loc=await fetch("/api/locations").then(r=>r.json());
+ $("#states").innerHTML=`<div class="chip ${!state?"active":""}" data-v="">All states</div>`+loc.states.map(x=>`<div class="chip ${state===x?"active":""}" data-v="${esc(x)}">${esc(x)}</div>`).join("");
+ $$("#states .chip").forEach(x=>x.onclick=()=>{state=x.dataset.v;city="";load()});
+ $("#cities").innerHTML=`<div class="chip ${!city?"active":""}" data-v="">All cities</div>`+loc.cities.map(x=>`<div class="chip ${city===x?"active":""}" data-v="${esc(x)}">${esc(x)}</div>`).join("");
+ $$("#cities .chip").forEach(x=>x.onclick=()=>{city=x.dataset.v;load()});
+}
+async function status(){
+ let d=await fetch("/api/status").then(r=>r.json());
+ $("#status").textContent=`${d.articles} stories · ${d.epapers} e-papers · auto-refresh ${d.refresh_minutes}m`;
+}
+$$(".tab").forEach(x=>x.onclick=()=>{$$(".tab").forEach(y=>y.classList.remove("active"));x.classList.add("active");region=x.dataset.v;state="";city="";load()});
+$("#date").onchange=load;$("#language").onchange=papers;$("#search").oninput=()=>{clearTimeout(window.t);window.t=setTimeout(load,300)};
+$("#refresh").onclick=async()=>{let b=$("#refresh");b.disabled=true;b.textContent="Refreshing…";try{await fetch("/api/refresh",{method:"POST"});await load()}finally{b.disabled=false;b.textContent="Refresh"}};
+load();
+</script>
+</body></html>

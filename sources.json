@@ -1,0 +1,539 @@
+{
+  "sources": [
+    {
+      "name": "BBC News",
+      "url": "https://feeds.bbci.co.uk/news/rss.xml",
+      "region": "World",
+      "language": "en",
+      "priority": 9
+    },
+    {
+      "name": "Reuters World",
+      "url": "https://feeds.reuters.com/reuters/worldNews",
+      "region": "World",
+      "language": "en",
+      "priority": 10
+    },
+    {
+      "name": "Al Jazeera",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml",
+      "region": "World",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "name": "The Hindu",
+      "url": "https://www.thehindu.com/feeder/default.rss",
+      "region": "India",
+      "language": "en",
+      "priority": 9,
+      "epapers": [
+        {
+          "name": "The Hindu",
+          "region": "India",
+          "language": "en",
+          "official_url": "https://epaper.thehindu.com/",
+          "archive_url": "https://epaper.thehindu.com/",
+          "notes": "Official e-paper/archive landing page."
+        }
+      ]
+    },
+    {
+      "name": "Indian Express",
+      "url": "https://indianexpress.com/feed/",
+      "region": "India",
+      "language": "en",
+      "priority": 9,
+      "epapers": [
+        {
+          "name": "The Indian Express",
+          "region": "India",
+          "language": "en",
+          "official_url": "https://epaper.indianexpress.com/",
+          "archive_url": "https://epaper.indianexpress.com/"
+        }
+      ]
+    },
+    {
+      "name": "NDTV",
+      "url": "https://feeds.feedburner.com/ndtvnews-top-stories",
+      "region": "India",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "name": "Hindustan Times",
+      "url": "https://www.hindustantimes.com/feeds/rss/latest/rssfeed.xml",
+      "region": "India",
+      "language": "en",
+      "priority": 8
+    },
+    {
+      "name": "Times of India",
+      "url": "https://timesofindia.indiatimes.com/rssfeedstopstories.cms",
+      "region": "India",
+      "language": "en",
+      "priority": 8,
+      "epapers": [
+        {
+          "name": "Times of India",
+          "region": "India",
+          "language": "en",
+          "official_url": "https://epaper.indiatimes.com/",
+          "archive_url": "https://epaper.indiatimes.com/"
+        }
+      ]
+    },
+    {
+      "name": "Economic Times",
+      "url": "https://economictimes.indiatimes.com/rssfeedstopstories.cms",
+      "region": "India",
+      "language": "en",
+      "priority": 8,
+      "epapers": [
+        {
+          "name": "Economic Times",
+          "region": "India",
+          "language": "en",
+          "official_url": "https://economictimes.indiatimes.com/epaper",
+          "archive_url": "https://economictimes.indiatimes.com/epaper"
+        }
+      ]
+    },
+    {
+      "name": "The New Indian Express",
+      "url": "https://www.newindianexpress.com/feed",
+      "region": "India",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "Loksatta",
+      "url": "https://www.loksatta.com/feed/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "priority": 9,
+      "epapers": [
+        {
+          "name": "Loksatta",
+          "region": "Maharashtra",
+          "state": "Maharashtra",
+          "language": "mr",
+          "official_url": "https://epaper.loksatta.com/",
+          "archive_url": "https://epaper.loksatta.com/"
+        }
+      ]
+    },
+    {
+      "name": "Lokmat",
+      "url": "https://www.lokmat.com/rss",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "priority": 9,
+      "epapers": [
+        {
+          "name": "Lokmat",
+          "region": "Maharashtra",
+          "state": "Maharashtra",
+          "language": "mr",
+          "official_url": "https://epaper.lokmat.com/",
+          "archive_url": "https://epaper.lokmat.com/"
+        }
+      ]
+    },
+    {
+      "name": "Sakal",
+      "url": "https://www.esakal.com/rss",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "priority": 9,
+      "epapers": [
+        {
+          "name": "Sakal",
+          "region": "Maharashtra",
+          "state": "Maharashtra",
+          "language": "mr",
+          "official_url": "https://epaper.esakal.com/",
+          "archive_url": "https://epaper.esakal.com/"
+        }
+      ]
+    },
+    {
+      "name": "Maharashtra Times",
+      "url": "https://maharashtratimes.com/rss.cms",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "priority": 8,
+      "epapers": [
+        {
+          "name": "Maharashtra Times",
+          "region": "Maharashtra",
+          "state": "Maharashtra",
+          "language": "mr",
+          "official_url": "https://epaper.indiatimes.com/",
+          "archive_url": "https://epaper.indiatimes.com/"
+        }
+      ]
+    },
+    {
+      "name": "Free Press Journal",
+      "url": "https://www.freepressjournal.in/rss",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "The Telegraph",
+      "url": "https://www.telegraphindia.com/",
+      "region": "India",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"The Telegraph","region":"India","language":"en","official_url":"https://epaper.telegraphindia.com/","archive_url":"https://epaper.telegraphindia.com/"}]
+    },
+    {
+      "name": "Deccan Herald",
+      "url": "https://www.deccanherald.com/",
+      "region": "India",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"Deccan Herald","region":"India","language":"en","official_url":"https://epaper.deccanherald.com/","archive_url":"https://epaper.deccanherald.com/"}]
+    },
+    {
+      "name": "The Tribune",
+      "url": "https://www.tribuneindia.com/",
+      "region": "India",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"The Tribune","region":"India","language":"en","official_url":"https://epaper.tribuneindia.com/","archive_url":"https://epaper.tribuneindia.com/"}]
+    },
+    {
+      "name": "Business Standard",
+      "url": "https://www.business-standard.com/",
+      "region": "India",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"Business Standard","region":"India","language":"en","official_url":"https://epaper.business-standard.com/","archive_url":"https://epaper.business-standard.com/"}]
+    },
+    {
+      "name": "Mint",
+      "url": "https://www.livemint.com/",
+      "region": "India",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"Mint","region":"India","language":"en","official_url":"https://www.livemint.com/epaper","archive_url":"https://www.livemint.com/epaper"}]
+    },
+    {
+      "name": "Mid-day",
+      "url": "https://www.mid-day.com/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "en",
+      "enabled": false,
+      "epapers": [{"name":"Mid-day","region":"Maharashtra","state":"Maharashtra","language":"en","official_url":"https://epaper.mid-day.com/","archive_url":"https://epaper.mid-day.com/"}]
+    },
+    {
+      "name": "Pudhari",
+      "url": "https://pudhari.news/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Pudhari","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://epaper.pudhari.news/","archive_url":"https://epaper.pudhari.news/"}]
+    },
+    {
+      "name": "Divya Marathi",
+      "url": "https://divyamarathi.bhaskar.com/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Divya Marathi","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://epaper.bhaskar.com/","archive_url":"https://epaper.bhaskar.com/"}]
+    },
+    {
+      "name": "Prahaar",
+      "url": "https://prahaar.in/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Prahaar","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://prahaar.in/","archive_url":"https://prahaar.in/"}]
+    },
+    {
+      "name": "Kesari",
+      "url": "https://www.kesari.in/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Kesari","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://www.kesari.in/","archive_url":"https://www.kesari.in/"}]
+    },
+    {
+      "name": "Navshakti",
+      "url": "https://www.navshakti.co.in/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Navshakti","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://www.navshakti.co.in/","archive_url":"https://www.navshakti.co.in/"}]
+    },
+    {
+      "name": "Tarun Bharat",
+      "url": "https://www.tarunbharat.com/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Tarun Bharat","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://www.tarunbharat.com/","archive_url":"https://www.tarunbharat.com/"}]
+    },
+    {
+      "name": "Deshdoot",
+      "url": "https://www.deshdoot.com/",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "mr",
+      "enabled": false,
+      "epapers": [{"name":"Deshdoot","region":"Maharashtra","state":"Maharashtra","language":"mr","official_url":"https://www.deshdoot.com/","archive_url":"https://www.deshdoot.com/"}]
+    },
+    {
+      "name": "Google News — Maharashtra",
+      "url": "https://news.google.com/rss/search?q=Maharashtra&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Mumbai",
+      "url": "https://news.google.com/rss/search?q=Mumbai&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Mumbai Local",
+      "url": "https://news.google.com/rss/search?q=Mumbai+news&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Mumbai Marathi",
+      "url": "https://news.google.com/rss/search?q=Mumbai&hl=mr-IN&gl=IN&ceid=IN:mr",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Mumbai",
+      "language": "mr",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Pune",
+      "url": "https://news.google.com/rss/search?q=Pune&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Pune Local",
+      "url": "https://news.google.com/rss/search?q=Pune+news&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Pune Marathi",
+      "url": "https://news.google.com/rss/search?q=Pune&hl=mr-IN&gl=IN&ceid=IN:mr",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Pune",
+      "language": "mr",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Nashik",
+      "url": "https://news.google.com/rss/search?q=Nashik&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nashik",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Nashik Local",
+      "url": "https://news.google.com/rss/search?q=Nashik+news&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nashik",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Nashik Marathi",
+      "url": "https://news.google.com/rss/search?q=Nashik&hl=mr-IN&gl=IN&ceid=IN:mr",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nashik",
+      "language": "mr",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Nagpur",
+      "url": "https://news.google.com/rss/search?q=Nagpur&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nagpur",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Nagpur Local",
+      "url": "https://news.google.com/rss/search?q=Nagpur+news&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nagpur",
+      "language": "en",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Nagpur Marathi",
+      "url": "https://news.google.com/rss/search?q=Nagpur&hl=mr-IN&gl=IN&ceid=IN:mr",
+      "region": "Maharashtra",
+      "state": "Maharashtra",
+      "city": "Nagpur",
+      "language": "mr",
+      "priority": 7
+    },
+    {
+      "name": "Google News — Gujarat",
+      "url": "https://news.google.com/rss/search?q=Gujarat&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Gujarat",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Rajasthan",
+      "url": "https://news.google.com/rss/search?q=Rajasthan&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Rajasthan",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Karnataka",
+      "url": "https://news.google.com/rss/search?q=Karnataka&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Karnataka",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Tamil Nadu",
+      "url": "https://news.google.com/rss/search?q=Tamil+Nadu&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Tamil Nadu",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Kerala",
+      "url": "https://news.google.com/rss/search?q=Kerala&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Kerala",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Delhi",
+      "url": "https://news.google.com/rss/search?q=Delhi&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Delhi",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Uttar Pradesh",
+      "url": "https://news.google.com/rss/search?q=Uttar+Pradesh&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Uttar Pradesh",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — West Bengal",
+      "url": "https://news.google.com/rss/search?q=West+Bengal&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "West Bengal",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Telangana",
+      "url": "https://news.google.com/rss/search?q=Telangana&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Telangana",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Andhra Pradesh",
+      "url": "https://news.google.com/rss/search?q=Andhra+Pradesh&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Andhra Pradesh",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Punjab",
+      "url": "https://news.google.com/rss/search?q=Punjab+India&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Punjab",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Bihar",
+      "url": "https://news.google.com/rss/search?q=Bihar&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Bihar",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Madhya Pradesh",
+      "url": "https://news.google.com/rss/search?q=Madhya+Pradesh&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Madhya Pradesh",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Odisha",
+      "url": "https://news.google.com/rss/search?q=Odisha&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Odisha",
+      "language": "en",
+      "priority": 6
+    },
+    {
+      "name": "Google News — Assam",
+      "url": "https://news.google.com/rss/search?q=Assam&hl=en-IN&gl=IN&ceid=IN:en",
+      "region": "India",
+      "state": "Assam",
+      "language": "en",
+      "priority": 6
+    }
+  ]
+}
