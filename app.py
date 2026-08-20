@@ -24,7 +24,11 @@ def now():
 class DatabaseConnection:
     def __init__(self):
         if DATABASE_URL:
-            self.connection = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+            self.connection = psycopg.connect(
+                DATABASE_URL,
+                row_factory=dict_row,
+                prepare_threshold=None,
+            )
         else:
             self.connection = sqlite3.connect(DB, timeout=30)
             self.connection.row_factory = sqlite3.Row
