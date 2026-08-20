@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from urllib.parse import quote_plus
 import feedparser
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -154,13 +155,14 @@ def summary(title, desc):
     out=" ".join(parts[:2]).strip()
     return out[:277]+"..." if len(out)>280 else out
 
-def insert_article(src,e):
+def insert_article(src,e,c=None):
     title=clean(getattr(e,"title",""))
     url=getattr(e,"link","")
     if not title or not url: return False
     desc=clean(getattr(e,"summary","") or getattr(e,"description",""))
     aid=hashlib.sha256(url.encode()).hexdigest()[:32]
-    c=db()
+    own_connection = c is None
+    c = c or db()
     c.execute("""INSERT INTO articles
       (id,title,url,source,language,region,state,city,category,importance,published_at,summary,fetched_at)
       VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)
@@ -170,21 +172,23 @@ def insert_article(src,e):
       (aid,title,url,src["name"],src.get("language","en"),src.get("region","India"),
        src.get("state"),src.get("city"),category(title,desc),
        importance(title,desc,src.get("priority",5)),published(e),summary(title,desc),now()))
-    c.commit(); c.close()
+    if own_connection:
+        c.commit(); c.close()
     return True
 
 def fetch_source(src):
     started=now()
+    c=db()
     try:
         feed=feedparser.parse(src["url"])
         n=0
         for e in feed.entries[:src.get("limit",50)]:
-            if insert_article(src,e): n+=1
-        c=db(); c.execute("INSERT INTO refresh_log(started_at,finished_at,source,fetched,ok) VALUES(?,?,?,?,1)",
+            if insert_article(src,e,c): n+=1
+        c.execute("INSERT INTO refresh_log(started_at,finished_at,source,fetched,ok) VALUES(?,?,?,?,1)",
                            (started,now(),src["name"],n)); c.commit(); c.close()
         return {"source":src["name"],"count":n,"ok":True}
     except Exception as ex:
-        c=db(); c.execute("INSERT INTO refresh_log(started_at,finished_at,source,fetched,ok,error) VALUES(?,?,?,?,0,?)",
+        c.execute("INSERT INTO refresh_log(started_at,finished_at,source,fetched,ok,error) VALUES(?,?,?,?,0,?)",
                            (started,now(),src["name"],0,str(ex))); c.commit(); c.close()
         return {"source":src["name"],"count":0,"ok":False,"error":str(ex)}
 
@@ -205,7 +209,9 @@ init_db()
 seed_epapers()
 
 def refresh_all():
-    results=[fetch_source(s) for s in load_config()["sources"] if s.get("enabled",True)]
+    sources=[s for s in load_config()["sources"] if s.get("enabled",True)]
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        results=list(executor.map(fetch_source,sources))
     seed_epapers()
     return results
 
